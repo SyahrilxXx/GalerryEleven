@@ -1,0 +1,17 @@
+{
+  "name": "elevenimage-gallery",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Galeri foto publik dengan upload ke folder GalleryEleven",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}
+
