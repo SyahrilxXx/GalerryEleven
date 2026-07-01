@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ElevenImage Gallery</title>
+  <link
+    rel="icon"
+    href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="%231f7dff"/><text x="50%25" y="54%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="white">EI</text></svg>'
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="hero">
+      <nav class="topbar">
+        <div class="brand">
+          <div class="brand-mark">E</div>
+          <div>
+            <p class="brand-label">GALERY ELEVEN FAMILY</p>
+            <h1>Eleven</h1>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="ghost-button" id="openPasswordVaultButton" type="button">
+            Lihat Password
+          </button>
+        </div>
+      </nav>
+
+      <section class="hero-content">
+        <div class="hero-copy">
+          <span class="pill">Photo Storage</span>
+          <h2>Logo Dan Beberapa Momen Eleven</h2>
+          <p>
+            Penyimpanan Logo Dan Momen Tanpa Batas Dan Tidak Memakan Memory Hanya Ada Di Website Eleven
+          </p>
+
+          <div class="hero-actions">
+            <button class="secondary-button" id="scrollGalleryButton" type="button">
+              Lihat Galeri
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="stat-card">
+            <span>Total Foto</span>
+            <strong id="photoCount">0</strong>
+          </div>
+
+          <div class="stat-card highlight">
+            <span>Total Sematan</span>
+            <strong id="pinnedCount">0</strong>
+          </div>
+
+          <div class="featured-card" id="featuredCard">
+            <div class="featured-head">
+              <div>
+                <p class="section-label">Foto Sematan</p>
+                <h3 id="featuredTitle">Galery sematan Anda</h3>
+              </div>
+              <span class="featured-badge">Pinned</span>
+            </div>
+
+            <div class="featured-grid hidden" id="featuredGrid"></div>
+
+            <div class="featured-empty" id="featuredEmpty">
+              <div class="empty-icon small">★</div>
+              <p>Sematkan foto favorit Anda agar tampil di bagian atas</p>
+            </div>
+            <p class="featured-date" id="featuredDate">Belum ada foto yang disematkan</p>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main class="content">
+      <section class="toolbar">
+        <div>
+          <p class="section-label">Galery Foto</p>
+          <h3>Koleksi Anda</h3>
+        </div>
+
+        <div class="toolbar-actions">
+          <label class="search-box" for="searchInput">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M10.5 3a7.5 7.5 0 1 1 0 15a7.5 7.5 0 0 1 0-15Zm0 2a5.5 5.5 0 1 0 0 11a5.5 5.5 0 0 0 0-11Zm8.91 12.5l1.59 1.59L19.59 21L18 19.41z"
+              />
+            </svg>
+            <input id="searchInput" type="text" placeholder="Cari judul foto..." />
+          </label>
+          <button class="primary-button" id="toolbarUploadButton" type="button">
+            Upload Baru
+          </button>
+        </div>
+      </section>
+
+      <section class="gallery-wrapper" id="gallerySection">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">+</div>
+          <h4>Belum ada foto</h4>
+          <p>Mulai upload foto pertama Anda untuk mengisi galeri ini</p>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <input
+    type="file"
+    id="fileInput"
+    class="visually-hidden-input"
+    accept="image/png, image/jpeg, image/webp, image/gif"
+  />
+
+  <div class="modal-backdrop hidden" id="passwordModal" aria-hidden="true">
+    <div class="password-modal">
+      <div class="modal-badge" id="modalBadge">Secure Access</div>
+      <h3 id="modalTitle">Masukkan Password</h3>
+      <p id="modalDescription">Ketik password untuk melanjutkan proses</p>
+
+      <form id="passwordForm" class="password-form">
+        <label class="password-field hidden" for="titleInput" id="titleField">
+          <span>Judul Foto</span>
+          <div class="password-input-wrap">
+            <input
+              id="titleInput"
+              type="text"
+              placeholder="Masukkan nama atau judul foto"
+              autocomplete="off"
+            />
+          </div>
+        </label>
+
+        <label class="password-field" for="passwordInput">
+          <span>Password</span>
+          <div class="password-input-wrap">
+            <input
+              id="passwordInput"
+              type="password"
+              placeholder="Masukkan password"
+              autocomplete="off"
+              required
+            />
+            <button type="button" class="toggle-password" id="togglePasswordButton">
+              Tampilkan
+            </button>
+          </div>
+        </label>
+
+        <p class="modal-error hidden" id="modalError"></p>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary-button" id="cancelPasswordButton">
+            Batal
+          </button>
+          <button type="submit" class="primary-button" id="submitPasswordButton">
+            Lanjutkan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <div class="vault-backdrop hidden" id="passwordVault" aria-hidden="true">
+    <div class="vault-modal">
+      <div class="vault-head">
+        <div>
+          <p class="section-label">Password Center</p>
+          <h3>Daftar Password Fitur</h3>
+        </div>
+        <button class="ghost-button vault-close" id="closePasswordVaultButton" type="button">
+          Tutup
+        </button>
+      </div>
+
+      <div class="vault-grid">
+        <article class="vault-card">
+          <span class="vault-label">Upload Foto</span>
+          <strong class="vault-value" id="vaultUpload">••••••••</strong>
+        </article>
+        <article class="vault-card">
+          <span class="vault-label">Hapus Foto</span>
+          <strong class="vault-value" id="vaultDelete">••••••••</strong>
+        </article>
+        <article class="vault-card">
+          <span class="vault-label">Sematkan/unsematkan Foto</span>
+          <strong class="vault-value" id="vaultPin">••••••••</strong>
+        </article>
+        <article class="vault-card">
+          <span class="vault-label">Lihat Password</span>
+          <strong class="vault-value" id="vaultVault">••••••••</strong>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <template id="photoCardTemplate">
+    <article class="photo-card">
+      <div class="photo-frame">
+        <img alt="" class="photo-image" />
+      </div>
+      <div class="photo-meta">
+        <div>
+          <h4 class="photo-title"></h4>
+          <p class="photo-date"></p>
+        </div>
+        <div class="photo-actions">
+          <button class="preview-button" type="button">Preview</button>
+          <button class="pin-button" type="button">Sematkan</button>
+          <button class="download-button" type="button">Download</button>
+          <button class="delete-button" type="button">Hapus</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <div class="preview-backdrop hidden" id="previewModal" aria-hidden="true">
+    <div class="preview-modal">
+      <div class="preview-topbar">
+        <div>
+          <p class="section-label">Preview Foto</p>
+          <h3 id="previewTitle">Foto</h3>
+        </div>
+        <button class="ghost-button preview-close" id="closePreviewButton" type="button">
+          Tutup
+        </button>
+      </div>
+
+      <div class="preview-media-wrap">
+        <img id="previewImage" class="preview-image" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
